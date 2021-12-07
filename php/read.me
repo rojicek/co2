@@ -1,0 +1,16 @@
+include.db je jen pripojeni k databazi:
+
+
+<?php
+    
+    $databaseConnection = new mysqli("server","uzivatel","heslo", "databaze");
+
+    if ($databaseConnection->connect_error)
+    {
+        
+        mail('jiri@rojicek.cz', 'DB down !', $databaseConnection->connect_error);
+        die("Database selection failed: " . $databaseConnection->connect_error);        
+    }
+    
+    
+?>
