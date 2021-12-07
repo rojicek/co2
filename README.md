@@ -1,2 +1,3 @@
-# co2
-text
+# CO2, teplota, vlhkost @ Arduino
+
+php + kod pro Arduino
