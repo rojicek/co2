@@ -66,7 +66,7 @@ void loop()
 
   write_http( temperature,  relativeHumidity,  co2);
   
-  delay(10000);
+  delay(300000);
 }
 
 unsigned int write_http(float temperature, float humidity, float co2)
