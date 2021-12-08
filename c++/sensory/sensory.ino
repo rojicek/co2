@@ -4,7 +4,6 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClientSecureBearSSL.h>
 #include <Wire.h>
-// Fingerprint for demo URL, expires on June 2, 2021, needs to be updated well before this date
 
 ESP8266WiFiMulti WiFiMulti;
 
@@ -27,7 +26,7 @@ void setup()
   Serial.println("Sensor init");
 
   //wait, wait, wait
-  for (uint8_t t = 2; t > 0; t--) {
+  for (uint8_t t = 4; t > 0; t--) {
     Serial.printf("[SETUP] WAIT %d...\n", t);
     Serial.flush();
     delay(1000);
@@ -39,7 +38,9 @@ void setup()
   
   //wire setup
   Wire.begin();
-  delay(1000);
+  Serial.println("init done");
+  
+  delay(3000);
 }
 
 void loop()
@@ -70,16 +71,22 @@ void loop()
 
 unsigned int write_http(float temperature, float humidity, float co2)
 {
+
+  if ((WiFiMulti.run() == WL_CONNECTED))
+  {
     std::unique_ptr<BearSSL::WiFiClientSecure>client(new BearSSL::WiFiClientSecure);
     client->setInsecure();
     HTTPClient https;
 
     Serial.print("[HTTPS] begin...\n");
-    String url = "https://www.rojicek.cz/dbstore/sens.php?temperature=0&co2="; 
+    String url = "https://www.rojicek.cz/dbstore/sens.php?temperature=0"; 
+    url = url + "&co2=";
     url = url + co2;
+    url = url + "&humidity=";
+    url = url + humidity;
+
     
-    
-    
+      
     if (https.begin(*client, url)) 
     {  
       // HTTPS
@@ -112,7 +119,7 @@ unsigned int write_http(float temperature, float humidity, float co2)
     {
       Serial.printf("[HTTPS] Unable to connect\n");
     }
-
+  }
     return 0;
  }
 
